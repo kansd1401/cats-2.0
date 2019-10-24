@@ -1,13 +1,20 @@
 const request = require('request');
-const link = 'https://api.thecatapi.com/v1/breeds/search?q=' + process.argv[2];
 
-request(link, (error, response, body) => {
-  const data = JSON.parse(body);
-  if (data.length !== 0) {
-    console.log('statusCode:', response && response.statusCode);
-    console.log(data[0]['description']);
-  } else {
-    console.log('Please enter a valid breed name');
-  }
-  
-});
+
+
+const fetchBreedDescription = function(breedName, callback) {
+  const link = 'https://api.thecatpi.com/v1/breeds/search?q=' + breedName;
+  request(link, (error, response, body) => {
+    if(error){
+      callback('Api down')
+    }
+    else if (JSON.parse(body).length !== 0) {
+     callback(JSON.parse(body)[0]['description']);
+    } else {
+     callback('Please enter a valid breed name');
+    }
+  });
+};
+
+module.exports = { fetchBreedDescription }
+

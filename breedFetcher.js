@@ -3,14 +3,14 @@ const request = require('request');
 
 
 const fetchBreedDescription = function(breedName, callback) {
-  const link = 'https://api.thecatpi.com/v1/breeds/search?q=' + breedName;
+  const link = 'https://api.thecatapi.com/v1/breeds/search?q=' + breedName;
   request(link, (error, response, body) => {
     if (error) {
-      callback('Api down');
+      callback(error,'Api down');
     } else if (JSON.parse(body).length !== 0) {
-      callback(JSON.parse(body)[0]['description']);
+      callback(error,JSON.parse(body)[0]['description'].trim());
     } else {
-      callback('Please enter a valid breed name');
+      callback(error,'Please enter a valid breed name');
     }
   });
 };
